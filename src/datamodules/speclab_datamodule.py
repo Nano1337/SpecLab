@@ -79,7 +79,7 @@ class SpecLabDataModule(LightningDataModule):
         mask_dir: str = r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_mask",
         train_val_test_split: Tuple[int, int, int] = (7_331, 2_443, 2_444),
         batch_size: int = 4,
-        num_workers: int = 2,
+        num_workers: int = 8,
         pin_memory: bool = True,
     ):
         super().__init__()
