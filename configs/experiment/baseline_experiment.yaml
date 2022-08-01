@@ -32,7 +32,7 @@ model:
 datamodule:
   batch_size: 4
   train_val_test_split: [7_331, 2_443, 2_444]
-  num_workers: 8
+  num_workers: 0
   pin_memory: True
 
 logger:

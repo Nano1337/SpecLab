@@ -7,7 +7,7 @@ defaults:
   - datamodule: speclab.yaml
   - model: speclab.yaml
   - callbacks: default.yaml
-  - logger: null # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
+  - logger: wandb.yaml # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
   - trainer: gpu.yaml
   - paths: default.yaml
   - extras: default.yaml
@@ -15,7 +15,7 @@ defaults:
 
   # experiment configs allow for version control of specific hyperparameters
   # e.g. best hyperparameters for given model and datamodule
-  - experiment: null
+  - experiment: baseline_experiment.yaml
 
   # config for hyperparameter optimization
   - hparams_search: null
