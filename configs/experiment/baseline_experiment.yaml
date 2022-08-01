@@ -7,7 +7,7 @@ defaults:
   - override /datamodule: speclab.yaml
   - override /model: speclab.yaml
   - override /callbacks: default.yaml
-  - override /trainer: gpu.yaml
+  - override /trainer: default.yaml
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
