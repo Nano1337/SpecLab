@@ -35,7 +35,7 @@ class SpecLabLitModule(LightningModule):
         self.net = net
 
         # loss function
-        self.criterion = F.binary_cross_entropy
+        self.criterion = F.binary_cross_entropy_with_logits
 
         # use separate metric instance for train, val and test step
         # to ensure a proper reduction over the epoch
@@ -56,8 +56,9 @@ class SpecLabLitModule(LightningModule):
 
     def step(self, batch: Any):
         x, y = batch
-        preds = self.forward(x)
-        loss = self.criterion(preds, y.float())
+        logits = self.forward(x)
+        loss = self.criterion(logits, y.float())
+        preds = torch.argmax(logits, dim=1)
         return loss, preds, y
 
     def training_step(self, batch: Any, batch_idx: int):
