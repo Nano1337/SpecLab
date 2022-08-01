@@ -2,7 +2,7 @@ from typing import Any, List
 
 import torch
 from pytorch_lightning import LightningModule
-from torchmetrics import Accuracy, MaxMetric
+from torchmetrics import Dice, MaxMetric
 import torch.nn.functional as F
 
 # def dice_score(input, target):
@@ -53,9 +53,9 @@ class SpecLabLitModule(LightningModule):
 
         # use separate metric instance for train, val and test step
         # to ensure a proper reduction over the epoch
-        self.train_jacc = Accuracy()
-        self.val_jacc = Accuracy()
-        self.test_jacc = Accuracy()
+        self.train_jacc = Dice()
+        self.val_jacc = Dice()
+        self.test_jacc = Dice()
 
         # for logging best so far validation jacc score
         self.val_jacc_best = MaxMetric()
