@@ -81,7 +81,6 @@ class SpecLabLitModule(LightningModule):
 
         # log train metrics
         jacc = self.train_jacc(preds, targets)
-        print(f"Jacc on batch: {jacc}")
         self.log("train/loss", loss, on_step=True, on_epoch=True, prog_bar=False)
         self.log("train/jacc", jacc, on_step=True, on_epoch=True, prog_bar=True)
 
