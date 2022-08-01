@@ -53,20 +53,20 @@ class SpecLabLitModule(LightningModule):
 
         # use separate metric instance for train, val and test step
         # to ensure a proper reduction over the epoch
-        self.train_jacc = Dice()
-        self.val_jacc = Dice()
-        self.test_jacc = Dice()
+        self.train_dice = Dice()
+        self.val_dice = Dice()
+        self.test_dice = Dice()
 
-        # for logging best so far validation jacc score
-        self.val_jacc_best = MaxMetric()
+        # for logging best so far validation dice score
+        self.val_dice_best = MaxMetric()
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
 
     def on_train_start(self):
         # by default lightning executes validation step sanity checks before training starts,
-        # so we need to make sure val_jacc_best doesn't store jacc score from these checks
-        self.val_jacc_best.reset()
+        # so we need to make sure val_dice_best doesn't store dice score from these checks
+        self.val_dice_best.reset()
 
     def step(self, batch: Any):
         x, y = batch
@@ -81,9 +81,9 @@ class SpecLabLitModule(LightningModule):
         loss, preds, targets = self.step(batch)
 
         # log train metrics
-        jacc = self.train_jacc(preds, targets)
+        dice = self.train_dice(preds, targets)
         self.log("train/loss", loss, on_step=True, on_epoch=True, prog_bar=False)
-        self.log("train/jacc", jacc, on_step=True, on_epoch=True, prog_bar=True)
+        self.log("train/dice", dice, on_step=True, on_epoch=True, prog_bar=True)
 
         # we can return here dict with any tensors
         # and then read it in some callback or in `training_epoch_end()` below
@@ -92,36 +92,36 @@ class SpecLabLitModule(LightningModule):
 
     def training_epoch_end(self, outputs: List[Any]):
         # `outputs` is a list of dicts returned from `training_step()`
-        self.train_jacc.reset()
+        self.train_dice.reset()
 
     def validation_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
         # log val metrics
-        jacc = self.val_jacc(preds, targets)
+        dice = self.val_dice(preds, targets)
         self.log("val/loss", loss, on_step=True, on_epoch=True, prog_bar=False)
-        self.log("val/jacc", jacc, on_step=True, on_epoch=True, prog_bar=True)
+        self.log("val/dice", dice, on_step=True, on_epoch=True, prog_bar=True)
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
     def validation_epoch_end(self, outputs: List[Any]):
-        jacc = self.val_jacc.compute()  # get val jacc score from current epoch
-        self.val_jacc_best.update(jacc)
-        self.log("val/jacc_best", self.val_jacc_best.compute(), on_epoch=True, prog_bar=True)
-        self.val_jacc.reset()
+        dice = self.val_dice.compute()  # get val dice score from current epoch
+        self.val_dice_best.update(dice)
+        self.log("val/dice_best", self.val_dice_best.compute(), on_epoch=True, prog_bar=True)
+        self.val_dice.reset()
 
     def test_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
         # log test metrics
-        jacc = self.test_jacc(preds, targets)
+        dice = self.test_dice(preds, targets)
         self.log("test/loss", loss, on_step=True, on_epoch=True)
-        self.log("test/jacc", jacc, on_step=True, on_epoch=True)
+        self.log("test/dice", dice, on_step=True, on_epoch=True)
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
     def test_epoch_end(self, outputs: List[Any]):
-        self.test_jacc.reset()
+        self.test_dice.reset()
 
     def configure_optimizers(self):
         """Return optimizers and schedulers."""
