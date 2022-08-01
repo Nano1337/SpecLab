@@ -73,9 +73,9 @@ class SpecLabLitModule(LightningModule):
         logits = self.forward(x)
         loss = self.criterion(logits, y.float())
         preds = F.sigmoid(logits)
-        preds = preds.argmax(dim=1).float()
+        preds = preds > 0.5
         y = y[:, 0, :, :]
-        return loss, y, y
+        return loss, preds, y
 
     def training_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
