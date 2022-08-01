@@ -3,9 +3,23 @@ from typing import Any, List
 import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric
-from torchmetrics import Dice
 import torch.nn.functional as F
 
+def dice_score(input, target):
+    """Dice Score Metric.
+
+    :param input: The input (predicted)
+    :param target:  The target (ground truth)
+    :returns: the Dice score between 0 and 1.
+    """
+    smooth = 1.
+
+    iflat = input.view(-1)
+    tflat = target.view(-1)
+    intersection = (iflat * tflat).sum()
+    
+    return ((2. * intersection + smooth) /
+              (iflat.sum() + tflat.sum() + smooth))
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
 
@@ -39,9 +53,9 @@ class SpecLabLitModule(LightningModule):
 
         # use separate metric instance for train, val and test step
         # to ensure a proper reduction over the epoch
-        self.train_dice = Dice()
-        self.val_dice = Dice()
-        self.test_dice = Dice()
+        self.train_dice = dice_score()
+        self.val_dice = dice_score()
+        self.test_dice = dice_score()
 
         # for logging best so far validation dice score
         self.val_dice_best = MaxMetric()
