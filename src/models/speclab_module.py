@@ -67,8 +67,8 @@ class SpecLabLitModule(LightningModule):
 
         # log train metrics
         dice = self.train_dice(preds, targets)
-        self.log("train/loss", loss, on_step=False, on_epoch=True, prog_bar=False)
-        self.log("train/dice", dice, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/loss", loss, on_step=True, on_epoch=True, prog_bar=False)
+        self.log("train/dice", dice, on_step=True, on_epoch=True, prog_bar=True)
 
         # we can return here dict with any tensors
         # and then read it in some callback or in `training_epoch_end()` below
@@ -84,8 +84,8 @@ class SpecLabLitModule(LightningModule):
 
         # log val metrics
         dice = self.val_dice(preds, targets)
-        self.log("val/loss", loss, on_step=False, on_epoch=True, prog_bar=False)
-        self.log("val/dice", dice, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/loss", loss, on_step=True, on_epoch=True, prog_bar=False)
+        self.log("val/dice", dice, on_step=True, on_epoch=True, prog_bar=True)
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
@@ -100,8 +100,8 @@ class SpecLabLitModule(LightningModule):
 
         # log test metrics
         dice = self.test_dice(preds, targets)
-        self.log("test/loss", loss, on_step=False, on_epoch=True)
-        self.log("test/dice", dice, on_step=False, on_epoch=True)
+        self.log("test/loss", loss, on_step=True, on_epoch=True)
+        self.log("test/dice", dice, on_step=True, on_epoch=True)
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
