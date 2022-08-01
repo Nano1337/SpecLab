@@ -69,6 +69,7 @@ class SpecLabLitModule(LightningModule):
         print("Preds shape:", preds.shape)
         print("Targets shape:", targets.shape)
         dice = self.train_dice(preds, targets)
+        print("Dice score:", dice)
         self.log("train/loss", loss, on_step=True, on_epoch=True, prog_bar=False)
         self.log("train/dice", dice, on_step=True, on_epoch=True, prog_bar=True)
 
