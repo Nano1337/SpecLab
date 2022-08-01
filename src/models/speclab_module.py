@@ -53,9 +53,9 @@ class SpecLabLitModule(LightningModule):
 
         # use separate metric instance for train, val and test step
         # to ensure a proper reduction over the epoch
-        self.train_dice = JaccardIndex()
-        self.val_dice = JaccardIndex()
-        self.test_dice = JaccardIndex()
+        self.train_dice = JaccardIndex(num_classes=2)
+        self.val_dice = JaccardIndex(num_classes=2)
+        self.test_dice = JaccardIndex(num_classes=2)
 
         # for logging best so far validation dice score
         self.val_dice_best = MaxMetric()
