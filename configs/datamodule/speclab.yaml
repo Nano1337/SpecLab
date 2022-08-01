@@ -1,0 +1,7 @@
+_target_: src.datamodules.speclab_datamodule.SpecLabDataModule
+img_dir: D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img
+mask_dir: D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_mask
+batch_size: 4
+train_val_test_split: [7_331, 2_443, 2_444]
+num_workers: 2
+pin_memory: True
