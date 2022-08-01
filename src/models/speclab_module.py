@@ -3,7 +3,7 @@ from typing import Any, List
 import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric
-from torchmetrics.functional import dice_score
+from torchmetrics import Dice
 import torch.nn.functional as F
 
 class SpecLabLitModule(LightningModule):
@@ -39,9 +39,9 @@ class SpecLabLitModule(LightningModule):
 
         # use separate metric instance for train, val and test step
         # to ensure a proper reduction over the epoch
-        self.train_dice = 0.0
-        self.val_dice = 0.0
-        self.test_dice = 0.0
+        self.train_dice = Dice(ignore_index=0)
+        self.val_dice = Dice(ignore_index=0)
+        self.test_dice = Dice(ignore_index=0)
 
         # for logging best so far validation dice score
         self.val_dice_best = MaxMetric()
@@ -58,14 +58,15 @@ class SpecLabLitModule(LightningModule):
         x, y = batch
         logits = self.forward(x)
         loss = self.criterion(logits, y.float())
-        preds = torch.argmax(logits, dim=1)
+        preds = torch.argmax(logits, dim=1).float()
+        preds = preds[:, None, :, :]
         return loss, preds, y
 
     def training_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
 
         # log train metrics
-        dice = self.train_dice(preds, targets.float())
+        dice = self.train_dice(preds, targets)
         self.log("train/loss", loss, on_step=False, on_epoch=True, prog_bar=False)
         self.log("train/dice", dice, on_step=False, on_epoch=True, prog_bar=True)
 
@@ -82,7 +83,7 @@ class SpecLabLitModule(LightningModule):
         loss, preds, targets = self.step(batch)
 
         # log val metrics
-        dice = self.val_dice(preds, targets.float())
+        dice = self.val_dice(preds, targets)
         self.log("val/loss", loss, on_step=False, on_epoch=True, prog_bar=False)
         self.log("val/dice", dice, on_step=False, on_epoch=True, prog_bar=True)
 
@@ -98,7 +99,7 @@ class SpecLabLitModule(LightningModule):
         loss, preds, targets = self.step(batch)
 
         # log test metrics
-        dice = self.test_dice(preds, targets.float())
+        dice = self.test_dice(preds, targets)
         self.log("test/loss", loss, on_step=False, on_epoch=True)
         self.log("test/dice", dice, on_step=False, on_epoch=True)
 
