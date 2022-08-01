@@ -72,7 +72,8 @@ class SpecLabLitModule(LightningModule):
         x, y = batch
         logits = self.forward(x)
         loss = self.criterion(logits, y.float())
-        preds = torch.argmax(logits, dim=1).float()
+        preds = F.sigmoid(logits)
+        preds = preds.argmax(dim=1).float()
         y = y[:, 0, :, :]
         return loss, preds, y
 
