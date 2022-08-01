@@ -73,7 +73,7 @@ class SpecLabLitModule(LightningModule):
         logits = self.forward(x)
         loss = self.criterion(logits, y.float())
         preds = torch.argmax(logits, dim=1).float()
-        preds = preds[:, None, :, :]
+        y = y[:, 0, :, :]
         return loss, preds, y
 
     def training_step(self, batch: Any, batch_idx: int):
