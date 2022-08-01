@@ -47,9 +47,7 @@ google-auth=2.9.1=pypi_0
 google-auth-oauthlib=0.4.6=pypi_0
 greenlet=1.1.1=py310hd77b12b_0
 grpcio=1.48.0=pypi_0
-hydra-colorlog=1.2.0=pypi_0
 hydra-core=1.2.0=pypi_0
-hydra-optuna-sweeper=1.2.0=pypi_0
 icc_rt=2019.0.0=h0cc432a_1
 idna=3.3=pyhd3eb1b0_0
 imagecodecs=2021.8.26=py310h6cc35ac_0
