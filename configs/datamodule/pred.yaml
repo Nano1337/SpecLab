@@ -2,6 +2,6 @@ _target_: src.datamodules.speclab_datamodule.SpecLabDataModule
 img_dir: /content/test_img
 mask_dir: /content/test_fake_mask
 batch_size: 1
-train_val_test_split: [0, 1, 1]
+train_val_test_split: [0, 0, 1]
 num_workers: 2
 pin_memory: True
