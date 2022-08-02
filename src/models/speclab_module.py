@@ -125,25 +125,19 @@ class SpecLabLitModule(LightningModule):
             img = self.tensor2img(imgs[i])
             pred = self.tensor2img(preds[i])
             target = self.tensor2img(targets[i][None, :, :])
-            print("img")
-            cv2_imshow(img)
-            print("pred")
-            cv2_imshow(pred)
-            print("target")
-            cv2_imshow(target)
-        #     masked_image = wandb.Image(img, masks={
-        #         "predictions": {
-        #             "mask_data": pred,
-        #             "class_labels": class_labels
-        #         },
-        #         "ground_truth": {
-        #             "mask_data": target,
-        #             "class_labels": class_labels
-        #         }
-        #     }, classes=class_set)
-        #     table.add_data(masked_image)
+            masked_image = wandb.Image(img, masks={
+                "predictions": {
+                    "mask_data": pred,
+                    "class_labels": class_labels
+                },
+                "ground_truth": {
+                    "mask_data": target,
+                    "class_labels": class_labels
+                }
+            }, classes=class_set)
+            table.add_data(masked_image)
 
-        # wandb.log({"random_field": table})
+        wandb.log({"random_field": table})
         sys.exit()
 
     def test_step(self, batch: Any, batch_idx: int):
