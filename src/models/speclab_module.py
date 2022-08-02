@@ -155,7 +155,8 @@ class SpecLabLitModule(LightningModule):
         self.log("test/loss", loss, on_step=True, on_epoch=True)
         self.log("test/dice", dice, on_step=True, on_epoch=True)
 
-        self.log_images(img, preds, targets)
+        if self.hparams.log_images:
+            self.log_images(img, preds, targets)
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
