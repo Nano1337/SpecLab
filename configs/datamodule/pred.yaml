@@ -1,0 +1,7 @@
+_target_: src.datamodules.speclab_datamodule.SpecLabDataModule
+img_dir: /content/GLENDA_img
+mask_dir: /content/GLENDA_mask
+batch_size: 1
+train_val_test_split: [1, 1, 1]
+num_workers: 2
+pin_memory: True
