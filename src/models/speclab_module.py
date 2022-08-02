@@ -101,7 +101,7 @@ class SpecLabLitModule(LightningModule):
     def tensor2img(self, tensor):
         """Convert a tensor to an image."""
         transform = transforms.ToPILImage()
-        tensor = tensor.astype(np.uint8)
+        tensor = tensor.long()
         img = transform(tensor)
         return img
     
