@@ -127,8 +127,8 @@ class SpecLabLitModule(LightningModule):
         for i in range(imgs.shape[0]):
             img = self.tensor2img(imgs[i])
             img = self.re_normalize(img)
-            pred = self.tensor2img(preds[i][None, :, :])
-            target = self.tensor2img(targets[i])
+            pred = self.tensor2img(preds[i])
+            target = self.tensor2img(targets[i][None, :, :])
             masked_image = wandb.Image(img, masks={
                 "predictions": {
                     "mask_data": pred,
