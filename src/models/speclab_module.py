@@ -4,22 +4,9 @@ import torch
 from pytorch_lightning import LightningModule
 from torchmetrics import Dice, MaxMetric
 import torch.nn.functional as F
+import wandb
+import numpy as np
 
-# def dice_score(input, target):
-#     """Dice Score Metric.
-
-#     :param input: The input (predicted)
-#     :param target:  The target (ground truth)
-#     :returns: the Dice score between 0 and 1.
-#     """
-#     smooth = 1.
-
-#     iflat = input.view(-1)
-#     tflat = target.view(-1)
-#     intersection = (iflat * tflat).sum()
-    
-#     return ((2. * intersection + smooth) /
-#               (iflat.sum() + tflat.sum() + smooth))
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
 
@@ -75,10 +62,10 @@ class SpecLabLitModule(LightningModule):
         preds = torch.sigmoid(logits)
         preds = preds > 0.5
         y = y[:, 0, :, :]
-        return loss, preds, y
+        return x, loss, preds, y
 
     def training_step(self, batch: Any, batch_idx: int):
-        loss, preds, targets = self.step(batch)
+        _, loss, preds, targets = self.step(batch)
 
         # log train metrics
         dice = self.train_dice(preds, targets)
@@ -95,7 +82,7 @@ class SpecLabLitModule(LightningModule):
         self.train_dice.reset()
 
     def validation_step(self, batch: Any, batch_idx: int):
-        loss, preds, targets = self.step(batch)
+        _, loss, preds, targets = self.step(batch)
 
         # log val metrics
         dice = self.val_dice(preds, targets)
@@ -110,13 +97,55 @@ class SpecLabLitModule(LightningModule):
         self.log("val/dice_best", self.val_dice_best.compute(), on_epoch=True, prog_bar=True)
         self.val_dice.reset()
 
+    def tensor2img(self, tensor):
+        """Convert a tensor to an image."""
+        tensor = tensor.cpu().numpy()
+        tensor = np.transpose(tensor, (1, 2, 0))
+        tensor = np.clip(tensor, 0, 1)
+        return tensor
+    
+    def re_normalize(self, img):
+        """Re-normalize the image."""
+        return (img * 255).astype(np.uint8)
+
+    def log_images(self, imgs, preds, targets):
+        """Log images to wandb."""
+
+        table = wandb.Table(columns=["image"])
+
+        class_labels = {
+            {"name": "background", "id": 0},
+            {"name": "SR", "id": 1},
+        }
+
+        for i in range(imgs.shape[0]):
+            img = self.tensor2img(imgs[i])
+            img = self.re_normalize(img)
+            pred = self.tensor2img(preds[i])
+            target = self.tensor2img(targets[i])
+            masked_image = wandb.Image(img, masks={
+                "predictions": {
+                    "mask_data": pred,
+                    "class_labels": class_labels
+                },
+                "ground_truth": {
+                    "mask_data": target,
+                    "class_labels": class_labels
+                }
+            }, classes=class_labels)
+            table.add_data(masked_image)
+
+        wandb.log({"random_field": table})
+
     def test_step(self, batch: Any, batch_idx: int):
-        loss, preds, targets = self.step(batch)
+        img, loss, preds, targets = self.step(batch)
 
         # log test metrics
         dice = self.test_dice(preds, targets)
         self.log("test/loss", loss, on_step=True, on_epoch=True)
         self.log("test/dice", dice, on_step=True, on_epoch=True)
+
+        self.log_images(img, preds, targets)
 
         return {"loss": loss, "preds": preds, "targets": targets}
 
