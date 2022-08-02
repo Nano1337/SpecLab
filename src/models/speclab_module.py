@@ -47,7 +47,7 @@ class SpecLabLitModule(LightningModule):
         # for logging best so far validation dice score
         self.val_dice_best = MaxMetric()
 
-        is_log_images = False
+        self.is_log_images = False
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
