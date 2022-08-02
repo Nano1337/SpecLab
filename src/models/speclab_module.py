@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import wandb
 import numpy as np
 import sys
-from google.colab.patches import cv2_imshow
+from sklearn.externals._pilutil import bytescale
 
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
@@ -99,10 +99,12 @@ class SpecLabLitModule(LightningModule):
         self.log("val/dice_best", self.val_dice_best.compute(), on_epoch=True, prog_bar=True)
         self.val_dice.reset()
 
-    def tensor2img(self, tensor):
+    def tensor2img(self, tensor, isImg=False):
         """Convert a tensor to an image."""
         img = tensor.cpu().numpy()
         img = np.transpose(img, (1, 2, 0))
+        if isImg:
+            return bytescale(img, 0, 255)
         return (img * 255).astype(np.uint8)
     
     def log_images(self, imgs, preds, targets):
@@ -122,7 +124,7 @@ class SpecLabLitModule(LightningModule):
 
 
         for i in range(imgs.shape[0]):
-            img = self.tensor2img(imgs[i])
+            img = self.tensor2img(imgs[i], isImg=True)
             pred = self.tensor2img(preds[i])[:, :, 0]
             target = self.tensor2img(targets[i][None, :, :])[:, :, 0]
             masked_image = wandb.Image(img, masks={
