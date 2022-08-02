@@ -123,8 +123,8 @@ class SpecLabLitModule(LightningModule):
 
         for i in range(imgs.shape[0]):
             img = self.tensor2img(imgs[i])
-            pred = self.tensor2img(preds[i])[0, :, :]
-            target = self.tensor2img(targets[i][None, :, :])[0, :, :]
+            pred = self.tensor2img(preds[i])
+            target = self.tensor2img(targets[i][None, :, :])
             print("img")
             cv2_imshow(img)
             print("pred")
