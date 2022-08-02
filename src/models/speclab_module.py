@@ -111,8 +111,9 @@ class SpecLabLitModule(LightningModule):
             img = invTrans(tensor)    
         img = tensor.cpu().numpy()
         img = np.transpose(img, (1, 2, 0))
-
-        return (img * 255).astype(np.uint8)
+        if not isImg: 
+            return (img * 255).astype(np.uint8)
+        return img
     
     def log_images(self, imgs, preds, targets):
         """Log images to wandb."""
