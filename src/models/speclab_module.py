@@ -123,8 +123,8 @@ class SpecLabLitModule(LightningModule):
             img = self.tensor2img(imgs[i])
             pred = self.tensor2img(preds[i])[0, :, :]
             target = self.tensor2img(targets[i][None, :, :])[0, :, :]
-            print("pred unique values:", pred.unique())
-            print("target unique values:", target.unique())
+            print("pred unique values:", np.unique(pred))
+            print("target unique values:", np.unique(target))
         #     masked_image = wandb.Image(img, masks={
         #         "predictions": {
         #             "mask_data": pred,
