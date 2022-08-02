@@ -11,5 +11,3 @@ net:
   drop_rate: 0.4
   bn_momentum: 0.1
   base_num_filters: 64
-
-log_image: false
