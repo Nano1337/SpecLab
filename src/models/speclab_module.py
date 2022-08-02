@@ -113,10 +113,10 @@ class SpecLabLitModule(LightningModule):
 
         table = wandb.Table(columns=["image"])
 
-        class_labels = {
+        class_labels = {[
             {"name": "background", "id": 0},
             {"name": "SR", "id": 1},
-        }
+        ]}
 
         for i in range(imgs.shape[0]):
             img = self.tensor2img(imgs[i])
