@@ -113,10 +113,16 @@ class SpecLabLitModule(LightningModule):
 
         table = wandb.Table(columns=["image"])
 
-        class_labels = {[
-            {"name": "background", "id": 0},
-            {"name": "SR", "id": 1},
-        ]}
+        class_labels = {
+            0: "background",
+            1: "SR",
+        }
+
+        class_set = wandb.Classes([
+            {"name" : "background", "id" : 0},
+            {"name" : "SR", "id" : 1},
+        ])
+
 
         for i in range(imgs.shape[0]):
             img = self.tensor2img(imgs[i])
@@ -132,7 +138,7 @@ class SpecLabLitModule(LightningModule):
                     "mask_data": target,
                     "class_labels": class_labels
                 }
-            }, classes=class_labels)
+            }, classes=class_set)
             table.add_data(masked_image)
 
         wandb.log({"random_field": table})
