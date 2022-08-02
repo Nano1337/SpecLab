@@ -99,7 +99,6 @@ class SpecLabLitModule(LightningModule):
 
     def tensor2img(self, tensor):
         """Convert a tensor to an image."""
-        print("tensor shape:", tensor.shape)
         img = tensor.cpu().numpy()
         img = np.transpose(img, (1, 2, 0))
         return img
