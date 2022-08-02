@@ -6,6 +6,8 @@ from torchmetrics import Dice, MaxMetric
 import torch.nn.functional as F
 import wandb
 import numpy as np
+import sys
+from google.colab.patches import cv2_imshow
 
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
@@ -123,8 +125,12 @@ class SpecLabLitModule(LightningModule):
             img = self.tensor2img(imgs[i])
             pred = self.tensor2img(preds[i])[0, :, :]
             target = self.tensor2img(targets[i][None, :, :])[0, :, :]
-            print("pred unique values:", np.unique(pred))
-            print("target unique values:", np.unique(target))
+            print("img")
+            cv2_imshow(img)
+            print("pred")
+            cv2_imshow(pred)
+            print("target")
+            cv2_imshow(target)
         #     masked_image = wandb.Image(img, masks={
         #         "predictions": {
         #             "mask_data": pred,
@@ -138,6 +144,7 @@ class SpecLabLitModule(LightningModule):
         #     table.add_data(masked_image)
 
         # wandb.log({"random_field": table})
+        sys.exit()
 
     def test_step(self, batch: Any, batch_idx: int):
         img, loss, preds, targets = self.step(batch)
