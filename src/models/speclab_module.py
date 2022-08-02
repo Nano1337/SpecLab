@@ -7,8 +7,7 @@ import torch.nn.functional as F
 import wandb
 import numpy as np
 import sys
-from sklearn.externals._pilutil import bytescale
-
+from torchvision import transforms
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
 
@@ -101,10 +100,18 @@ class SpecLabLitModule(LightningModule):
 
     def tensor2img(self, tensor, isImg=False):
         """Convert a tensor to an image."""
+
+        if isImg:
+            invTrans = transforms.Compose([ transforms.Normalize(mean = [ 0., 0., 0. ],
+                                                     std = [ 1/0.5, 1/0.5, 1/0.5 ]),
+                                transforms.Normalize(mean = [ -0.5, -0.5, -0.5 ],
+                                                     std = [ 1., 1., 1. ]),
+                               ])
+
+            img = invTrans(tensor)    
         img = tensor.cpu().numpy()
         img = np.transpose(img, (1, 2, 0))
-        if isImg:
-            return bytescale(img, 0, 255)
+
         return (img * 255).astype(np.uint8)
     
     def log_images(self, imgs, preds, targets):
