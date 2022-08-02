@@ -6,6 +6,7 @@ from torchmetrics import Dice, MaxMetric
 import torch.nn.functional as F
 import wandb
 import numpy as np
+from torchvision import transforms
 
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
@@ -99,10 +100,8 @@ class SpecLabLitModule(LightningModule):
 
     def tensor2img(self, tensor):
         """Convert a tensor to an image."""
-        tensor = tensor.cpu().numpy()
-        tensor = np.transpose(tensor, (1, 2, 0))
-        tensor = np.clip(tensor, 0, 1)
-        return tensor
+        transform = transforms.ToPILImage()
+        return transform(tensor.cpu())
     
     def re_normalize(self, img):
         """Re-normalize the image."""
@@ -126,7 +125,6 @@ class SpecLabLitModule(LightningModule):
 
         for i in range(imgs.shape[0]):
             img = self.tensor2img(imgs[i])
-            img = self.re_normalize(img)
             pred = self.tensor2img(preds[i])
             target = self.tensor2img(targets[i])
             masked_image = wandb.Image(img, masks={
