@@ -2,7 +2,7 @@
 
 defaults:
   - _self_
-  - datamodule: speclab.yaml 
+  - datamodule: pred.yaml # use speclab.yaml to run metrics
   - model: speclab.yaml
   - logger: wandb.yaml
   - trainer: gpu.yaml
