@@ -101,7 +101,8 @@ class SpecLabLitModule(LightningModule):
     def tensor2img(self, tensor):
         """Convert a tensor to an image."""
         transform = transforms.ToPILImage()
-        return transform(tensor)
+        img = transform(tensor)
+        return img
     
     def re_normalize(self, img):
         """Re-normalize the image."""
