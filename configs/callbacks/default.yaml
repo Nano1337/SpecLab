@@ -6,7 +6,7 @@ defaults:
   - _self_
 
 model_checkpoint:
-  dirpath: /content/checkpoints
+  dirpath: /content/SpecLab/configs/logs/model_checkpoints
   filename: "epoch_{epoch:03d}"
   monitor: "val/dice"
   mode: "max"
