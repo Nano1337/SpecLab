@@ -146,7 +146,6 @@ class SpecLabLitModule(LightningModule):
             table.add_data(masked_image)
 
         wandb.log({"random_field": table})
-        sys.exit()
 
     def test_step(self, batch: Any, batch_idx: int):
         img, loss, preds, targets = self.step(batch)
