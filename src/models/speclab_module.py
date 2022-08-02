@@ -6,7 +6,6 @@ from torchmetrics import Dice, MaxMetric
 import torch.nn.functional as F
 import wandb
 import numpy as np
-import sys
 from torchvision import transforms
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
@@ -100,7 +99,6 @@ class SpecLabLitModule(LightningModule):
 
     def tensor2img(self, tensor, isImg=False):
         """Convert a tensor to an image."""
-
         if isImg:
             invTrans = transforms.Compose([ transforms.Normalize(mean = [ 0., 0., 0. ],
                                                      std = [ 1/0.5, 1/0.5, 1/0.5 ]),
