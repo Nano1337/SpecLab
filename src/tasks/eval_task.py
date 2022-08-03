@@ -7,6 +7,7 @@ from pytorch_lightning import LightningDataModule, LightningModule, Trainer
 from pytorch_lightning.loggers import LightningLoggerBase
 
 from src import utils
+import time
 
 log = utils.get_pylogger(__name__)
 
@@ -55,7 +56,11 @@ def evaluate(cfg: DictConfig) -> Tuple[dict, dict]:
     # trainer.test(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
 
     # for predictions use trainer.predict(...)
+
+    start_time = time.time()
     predictions = trainer.predict(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
+    end_time = time.time()
+    print(f"Predictions took {end_time - start_time} seconds")
     print(predictions)
     metric_dict = trainer.callback_metrics
 
