@@ -8,6 +8,7 @@ from pytorch_lightning.loggers import LightningLoggerBase
 
 from src import utils
 import cv2
+import os
 
 log = utils.get_pylogger(__name__)
 
@@ -55,8 +56,15 @@ def predict(cfg: DictConfig) -> Tuple[dict, dict]:
      # returns a numpy list of predictions
     predictions = trainer.predict(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
     
-    pred = predictions[0][0, :, :]
-    cv2.imwrite("/content/pred.png", pred)
+    # predict a single image
+    # pred = predictions[0][0, :, :]
+    # cv2.imwrite("/content/pred.png", pred)
+
+    # predict a batch of images
+    output_dir = '/content/speclab_output/'
+    for i, pred in enumerate(predictions):
+        pred = pred[0, :, :]
+        cv2.imwrite(os.path.join(output_dir, str(i).zfill(5) + ".png"), pred)
 
     metric_dict = trainer.callback_metrics
 
