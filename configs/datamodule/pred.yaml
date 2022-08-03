@@ -1,6 +1,6 @@
 _target_: src.datamodules.speclab_datamodule.SpecLabDataModule
-img_dir: /content/test_img
-mask_dir: /content/test_fake_mask
+img_dir: /content/CVC-all/img
+mask_dir: /content/CVC-all/mask
 batch_size: 1
 train_val_test_split: [0, 0, 184] # change last index to 1 for a single test image
 num_workers: 2
