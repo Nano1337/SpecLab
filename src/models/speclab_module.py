@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import wandb
 import numpy as np
 from torchvision import transforms
+import cv2
 class SpecLabLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
 
@@ -134,6 +135,7 @@ class SpecLabLitModule(LightningModule):
         for i in range(imgs.shape[0]):
             img = self.tensor2img(imgs[i], isImg=True)
             pred = self.tensor2img(preds[i])[:, :, 0]
+            cv2.imwrite("/content/pred.png", pred)
             target = self.tensor2img(targets[i][None, :, :])[:, :, 0]
             masked_image = wandb.Image(img, masks={
                 "predictions": {
