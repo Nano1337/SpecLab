@@ -123,16 +123,20 @@ class SpecLabDataModule(LightningDataModule):
         # load and split datasets only if not loaded already
         if not self.data_train and not self.data_val and not self.data_test:
             full_dataset = self.prepare_data()
+            
+            # uncomment this code for everything except predictions
+            # # create test dataset
+            # train_dataset, self.data_test = torch.utils.data.random_split(full_dataset, 
+            #                                                             [self.hparams.train_val_test_split[0]+self.hparams.train_val_test_split[1], 
+            #                                                             self.hparams.train_val_test_split[2]])
 
-            # create test dataset
-            train_dataset, self.data_test = torch.utils.data.random_split(full_dataset, 
-                                                                        [self.hparams.train_val_test_split[0]+self.hparams.train_val_test_split[1], 
-                                                                        self.hparams.train_val_test_split[2]])
+            # # create train and val datasets
+            # self.data_train, self.data_val = torch.utils.data.random_split(train_dataset, [self.hparams.train_val_test_split[0], self.hparams.train_val_test_split[1]])
 
-            # create train and val datasets
-            self.data_train, self.data_val = torch.utils.data.random_split(train_dataset, [self.hparams.train_val_test_split[0], self.hparams.train_val_test_split[1]])
+            # uncomment this code for predictions instead 
+            self.data_test = full_dataset
 
-    def train_dataloader(self):
+    def train_dataloader(self): 
         return DataLoader(
             dataset=self.data_train,
             batch_size=self.hparams.batch_size,
