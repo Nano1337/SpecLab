@@ -167,6 +167,13 @@ class SpecLabLitModule(LightningModule):
     def test_epoch_end(self, outputs: List[Any]):
         self.test_dice.reset()
 
+    def predict_step(self, batch: Any, batch_idx: int):
+        _, _, preds, _ = self.step(batch)
+        predictions = []
+        for i in range(preds.shape[0]):
+            predictions.append(self.tensor2img(preds[i])[:, :, 0])
+        return np.asarray(predictions)
+
     def configure_optimizers(self):
         """Return optimizers and schedulers."""
         optimizer = self.hparams.optimizer(self.parameters())

@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from unittest import TestLoader
 
 import hydra
 from omegaconf import DictConfig
@@ -50,12 +51,12 @@ def evaluate(cfg: DictConfig) -> Tuple[dict, dict]:
         log.info("Logging hyperparameters!")
         utils.log_hyperparameters(object_dict)
 
-    log.info("Starting testing!")
-    trainer.test(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
+    # log.info("Starting testing!")
+    # trainer.test(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
 
     # for predictions use trainer.predict(...)
-    # predictions = trainer.predict(model=model, dataloaders=dataloaders, ckpt_path=cfg.ckpt_path)
-
+    predictions = trainer.predict(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
+    print(predictions)
     metric_dict = trainer.callback_metrics
 
     return metric_dict, object_dict
