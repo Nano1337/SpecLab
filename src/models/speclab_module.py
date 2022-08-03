@@ -168,9 +168,7 @@ class SpecLabLitModule(LightningModule):
 
     def predict_step(self, batch: Any, batch_idx: int):
         _, _, preds, _ = self.step(batch)
-        predictions = []
-        for i in range(preds.shape[0]):
-            predictions.append(self.tensor2img(preds[i])[:, :, 0])
+        predictions = [self.tensor2img(preds[i])[:, :, 0] for i in range(preds.shape[0])]
         return np.asarray(predictions)
 
     def configure_optimizers(self):

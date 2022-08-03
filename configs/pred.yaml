@@ -4,13 +4,13 @@ defaults:
   - _self_
   - datamodule: pred.yaml # use speclab.yaml to run metrics
   - model: speclab.yaml
-  - logger: wandb.yaml
+  - logger: null
   - trainer: gpu.yaml
   - paths: default.yaml
   - extras: default.yaml
   - hydra: default.yaml
 
-task_name: "eval"
+task_name: "pred"
 
 tags: ["dev"]
 

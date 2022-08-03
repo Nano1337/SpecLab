@@ -7,7 +7,7 @@ from pytorch_lightning import LightningDataModule, LightningModule, Trainer
 from pytorch_lightning.loggers import LightningLoggerBase
 
 from src import utils
-import time
+import cv2
 
 log = utils.get_pylogger(__name__)
 
@@ -54,7 +54,10 @@ def predict(cfg: DictConfig) -> Tuple[dict, dict]:
 
      # returns a numpy list of predictions
     predictions = trainer.predict(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
-    print(predictions)
+    
+    pred = predictions[0]
+    cv2.imwrite("/content/pred.png", pred)
+
     metric_dict = trainer.callback_metrics
 
     return metric_dict, object_dict
