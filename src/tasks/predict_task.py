@@ -56,7 +56,8 @@ def predict(cfg: DictConfig) -> Tuple[dict, dict]:
     predictions = trainer.predict(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
     
     pred = predictions[0]
-    cv2.imwrite("/content/pred.png", pred)
+    print(pred.shape)
+    # cv2.imwrite("/content/pred.png", pred)
 
     metric_dict = trainer.callback_metrics
 
