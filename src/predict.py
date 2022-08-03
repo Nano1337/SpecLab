@@ -5,12 +5,12 @@ from omegaconf import DictConfig
 root = pyrootutils.setup_root(__file__, dotenv=True, pythonpath=True)
 
 
-@hydra.main(version_base="1.2", config_path=root / "configs", config_name="speclab.yaml") # change to eval for metrics
+@hydra.main(version_base="1.2", config_path=root / "configs", config_name="pred.yaml") # change to eval for metrics
 def main(cfg: DictConfig) -> None:
 
-    from src.tasks.eval_task import evaluate
+    from src.tasks.predict_task import predict
 
-    evaluate(cfg)
+    predict(cfg)
 
 
 if __name__ == "__main__":
