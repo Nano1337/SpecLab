@@ -41,14 +41,14 @@ class SpecLabLitModule(LightningModule):
 
         # use separate metric instance for train, val and test step
         # to ensure a proper reduction over the epoch
-        self.train_dice = Dice()
-        self.val_dice = Dice()
-        self.test_dice = Dice()
+        self.train_dice = Dice(ignore_index=0)
+        self.val_dice = Dice(ignore_index=0)
+        self.test_dice = Dice(ignore_index=0)
 
         # for logging best so far validation dice score
         self.val_dice_best = MaxMetric()
 
-        self.is_log_images = True
+        self.is_log_images = False
 
     def forward(self, x: torch.Tensor):
         return self.net(x)
