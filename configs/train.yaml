@@ -18,7 +18,7 @@ defaults:
   - experiment: baseline_experiment.yaml
 
   # config for hyperparameter optimization
-  - hparams_search: null
+  - hparams_search: speclab_optuna.yaml
 
   # optional local config for machine/user specific settings
   # it's optional since it doesn't need to exist and is excluded from version control
@@ -45,7 +45,7 @@ train: True
 test: True
 
 # simply provide checkpoint path to resume training
-ckpt_path: null
+ckpt_path: /content/SpecLab/logs/model_checkpoints/epoch_001.ckpt
 
 # seed for random number generators in pytorch, numpy and python.random
 seed: 42

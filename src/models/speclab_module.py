@@ -174,7 +174,7 @@ class SpecLabLitModule(LightningModule):
     def configure_optimizers(self):
         """Return optimizers and schedulers."""
         optimizer = self.hparams.optimizer(self.parameters())
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=5, verbose=True)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=self.hparams.T_max, verbose=True)
         return [optimizer], [scheduler]
 
 if __name__ == "__main__":
