@@ -18,7 +18,7 @@ defaults:
   - experiment: baseline_experiment.yaml
 
   # config for hyperparameter optimization
-  - hparams_search: speclab_optuna.yaml
+  - hparams_search: null
 
   # optional local config for machine/user specific settings
   # it's optional since it doesn't need to exist and is excluded from version control
