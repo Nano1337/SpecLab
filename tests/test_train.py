@@ -72,7 +72,7 @@ def test_train_resume(tmp_path, cfg_train):
 
     files = os.listdir(tmp_path / "checkpoints")
     assert "last.ckpt" in files
-    assert "epoch_000.ckpt" in files
+    assert "epoch_001.ckpt" in files
 
     with open_dict(cfg_train):
         cfg_train.ckpt_path = str(tmp_path / "checkpoints" / "last.ckpt")
