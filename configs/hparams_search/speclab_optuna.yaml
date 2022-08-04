@@ -1,7 +1,7 @@
 # @package _global_
 
 # example hyperparameter optimization of some experiment with Optuna:
-# python train.py -m hparams_search=mnist_optuna experiment=example
+# python train.py -m hparams_search=speclab_optuna experiment=example
 
 defaults:
   - override /hydra/sweeper: optuna
@@ -46,7 +46,6 @@ hydra:
     # define hyperparameter search space
     params:
       model.optimizer.lr: interval(0.0001, 0.1)
-      datamodule.batch_size: choice(32, 64, 128, 256)
       model.net.drop_rate: choice(0.4, 0.5, 0.6, 0.7, 0.8)
       model.net.bn_momentum: choice(0.1, 0.3, 0.5, 0.7, 0.9)
-      
+      model.net.T_max: choice(5, 10, 15, 20)
