@@ -12,4 +12,3 @@ net:
   bn_momentum: 0.1
   base_num_filters: 64
 
-T_max: 5

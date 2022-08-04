@@ -27,7 +27,6 @@ class SpecLabLitModule(LightningModule):
         self,
         net: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
-        T_max: int,
     ):
         super().__init__()
 
@@ -48,8 +47,6 @@ class SpecLabLitModule(LightningModule):
 
         # for logging best so far validation dice score
         self.val_dice_best = MaxMetric()
-
-        self.T_max = T_max
 
         self.is_log_images = False
 
@@ -177,7 +174,7 @@ class SpecLabLitModule(LightningModule):
     def configure_optimizers(self):
         """Return optimizers and schedulers."""
         optimizer = self.hparams.optimizer(self.parameters())
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=self.T_max, verbose=True)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=20, verbose=True)
         return [optimizer], [scheduler]
 
 if __name__ == "__main__":
