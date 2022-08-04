@@ -15,4 +15,4 @@ task_name: "eval"
 tags: ["dev"]
 
 # passing checkpoint path is necessary for evaluation
-ckpt_path: /content/SpecLab/logs/model_checkpoints/epoch_001.ckpt
+ckpt_path: /content/SpecLab/logs/model_checkpoints/epoch_009.ckpt

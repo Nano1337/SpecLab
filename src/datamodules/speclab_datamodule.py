@@ -103,6 +103,8 @@ class SpecLabDataModule(LightningDataModule):
         self.data_val: Optional[Dataset] = None
         self.data_test: Optional[Dataset] = None
 
+        self.isPred = True
+
     @property
     def num_classes(self):
         return 2
@@ -124,17 +126,16 @@ class SpecLabDataModule(LightningDataModule):
         if not self.data_train and not self.data_val and not self.data_test:
             full_dataset = self.prepare_data()
             
-            # uncomment this code for everything except predictions
-            # create test dataset
-            train_dataset, self.data_test = torch.utils.data.random_split(full_dataset, 
-                                                                        [self.hparams.train_val_test_split[0]+self.hparams.train_val_test_split[1], 
-                                                                        self.hparams.train_val_test_split[2]])
+            if not self.isPred:
+                # create test dataset
+                train_dataset, self.data_test = torch.utils.data.random_split(full_dataset, 
+                                                                            [self.hparams.train_val_test_split[0]+self.hparams.train_val_test_split[1], 
+                                                                            self.hparams.train_val_test_split[2]])
 
-            # create train and val datasets
-            self.data_train, self.data_val = torch.utils.data.random_split(train_dataset, [self.hparams.train_val_test_split[0], self.hparams.train_val_test_split[1]])
-
-        # # uncomment this code for predictions instead 
-        # self.data_test = full_dataset
+                # create train and val datasets
+                self.data_train, self.data_val = torch.utils.data.random_split(train_dataset, [self.hparams.train_val_test_split[0], self.hparams.train_val_test_split[1]])
+            else:
+                self.data_test = full_dataset
 
     def train_dataloader(self): 
         return DataLoader(
