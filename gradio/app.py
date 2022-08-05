@@ -21,26 +21,26 @@ def speclab(img):
         A.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
         ToTensorV2()
     ])
-
     input = transforms(image=img)['image']
     input = input.unsqueeze(0)
 
-    # predict
+    # model prediction
     output = model(input)
     
+    # overlay output onto original image
     img[output==255] = 0
 
     return img
 
 # define app features and run
 
-css = ".output-image, .input-image {height: 40rem !important; width: 100% !important;}"
+css = ".output-image, .input-image {height: 30rem !important; width: 100% !important;}"
 examples = [
     r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img\00000.png"
 ]
 demo = gr.Interface(fn=speclab, 
                     inputs=gr.Image(), 
-                    outputs=gr.outputs.Image(type="pil", label="annotated image"),
+                    outputs=gr.Image(shape=(360, 640)),
                     css=css, 
                     examples=examples)
 demo.launch()
