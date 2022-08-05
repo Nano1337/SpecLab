@@ -44,3 +44,5 @@ demo = gr.Interface(fn=speclab,
                     css=css, 
                     examples=examples)
 demo.launch()
+
+# make sure to connect external SSD to computer before using locally
