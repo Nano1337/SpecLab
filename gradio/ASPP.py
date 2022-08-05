@@ -200,6 +200,7 @@ if __name__ == "__main__":
 
     # predict
     output = model(input)
+    
     # print(input.shape)
     img[output==255] = 0
     cv2.imwrite(r"./output.png", img)
