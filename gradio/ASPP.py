@@ -186,10 +186,11 @@ if __name__ == "__main__":
     for key in list(state_dict.keys()):
         state_dict[key.replace('net.', '')] = state_dict.pop(key)
     model.load_state_dict(state_dict)
+    model = model.to("cpu")
     model.eval()
 
     # preprocess image to be used as input
-    img = cv2.imread(r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img\00100.png")
+    img = cv2.imread(r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img\01000.png")
     transforms = A.Compose([
         A.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)),
         ToTensorV2()
