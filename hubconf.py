@@ -1,3 +1,5 @@
+dependencies = ['torch']
+
 import torch
 from demo.ASPP import SRDetectModel
 
