@@ -11,7 +11,7 @@ import numpy as np
 def speclab(img):
 
     # initialize the model
-    model = torch.hub.load('Nano1337/SpecLab', 'srdetect') # for some reasons loads the model in src rather than demo
+    model = torch.hub.load('Nano1337/SpecLab', 'ASPP') # for some reasons loads the model in src rather than demo
     model.eval()
 
     # preprocess image to be used as input
