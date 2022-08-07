@@ -10,12 +10,7 @@ import matplotlib.pyplot as plt
 def speclab(img):
 
     # initialize the model
-    model = SRDetectModel()
-    state_dict = torch.load(r"C:\Users\haoli\OneDrive\Documents\SpecLab\logs\model_checkpoints\epoch_009.ckpt")["state_dict"]
-    for key in list(state_dict.keys()):
-        state_dict[key.replace('net.', '')] = state_dict.pop(key)
-    model.load_state_dict(state_dict)
-    model = model.to("cpu")
+    model = torch.hub.load('Nano1337/SpecLab', 'aspp')
     model.eval()
 
     # preprocess image to be used as input
