@@ -159,7 +159,6 @@ class SRDetectModel(nn.Module):
 
         predictions = self.prediction(amort)
         # predictions = F.sigmoid(predictions) # disable for BCE with logits loss
-
         return predictions
 
 if __name__ == "__main__":

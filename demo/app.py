@@ -11,7 +11,7 @@ import numpy as np
 def speclab(img):
 
     # initialize the model
-    model = torch.hub.load('Nano1337/SpecLab', 'aspp')
+    model = torch.hub.load('Nano1337/SpecLab', 'srdetect') # for some reasons loads the model in src rather than demo
     model.eval()
 
     # preprocess image to be used as input
@@ -23,16 +23,15 @@ def speclab(img):
     input = input.unsqueeze(0)
 
     # model prediction
-    output = model(input)[0]
-    output = np.transpose(output.detach().numpy(), (1, 2, 0))
-    print(output.shape, img.shape)
+    output = model(input)
+    print(output.shape)
     # overlay output onto original image
-    img[output==255] = 0
+    # img[output==255] = 0
 
     return img
 
 # define app features and run
-img = np.zeros((512, 512, 3), dtype=np.uint8)   
+img = np.zeros((360, 640, 3), dtype=np.uint8)   
 speclab(img)
 
 # title = "SpecLab Demo"

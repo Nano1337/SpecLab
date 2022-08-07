@@ -169,7 +169,7 @@ class SRDetectModel(nn.Module):
         predictions = predictions > 0.5
 
         prediction = self.tensor2img(predictions[0])[:, :, 0]
-
+        
         return prediction
 
     def tensor2img(self, tensor):

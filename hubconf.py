@@ -1,7 +1,7 @@
 import torch
 from demo.ASPP import SRDetectModel
 
-def aspp():
+def srdetect():
     model = SRDetectModel()
     state_dict = torch.load(r"C:\Users\haoli\OneDrive\Documents\SpecLab\logs\model_checkpoints\epoch_009.ckpt")["state_dict"]
     for key in list(state_dict.keys()):
