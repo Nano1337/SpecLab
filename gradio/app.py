@@ -1,3 +1,4 @@
+from xml.dom.minidom import Element
 import gradio as gr
 from ASPP import SRDetectModel
 import torch
@@ -14,6 +15,7 @@ def speclab(img):
     for key in list(state_dict.keys()):
         state_dict[key.replace('net.', '')] = state_dict.pop(key)
     model.load_state_dict(state_dict)
+    model = model.to("cpu")
     model.eval()
 
     # preprocess image to be used as input
@@ -34,15 +36,23 @@ def speclab(img):
 
 # define app features and run
 
-css = ".output-image, .input-image {height: 30rem !important; width: 100% !important;}"
+title = "SpecLab Demo"
+description = "<p style='text-align: center'>Gradio demo for an ASPP model architecture trained on the SpecLab dataset. To use it, simply add your image, or click one of the examples to load them. </p>"
+article = "<p style='text-align: center'><a href='https://github.com/Nano1337/SpecLab'>Github Repo</a></p>"
 examples = [
-    r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img\00000.png"
+    [r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img\00000.png"]
 ]
+css = "#0 {object-fit: contain;} #1 {object-fit: contain;}"
 demo = gr.Interface(fn=speclab, 
-                    inputs=gr.Image(), 
-                    outputs=gr.Image(shape=(360, 640)),
+                    title=title, 
+                    description=description,
+                    article=article,
+                    inputs=gr.Image(elem_id=0, show_label=False), 
+                    outputs=gr.Image(elem_id=1, show_label=False),
                     css=css, 
-                    examples=examples)
+                    examples=examples, 
+                    cache_examples=True,
+                    allow_flagging='never')
 demo.launch()
 
 # make sure to connect external SSD to computer before using locally
