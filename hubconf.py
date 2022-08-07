@@ -1,5 +1,5 @@
 import torch
-from src.models.components.aspp import SRDetectModel
+from demo.ASPP import SRDetectModel
 
 def aspp():
     model = SRDetectModel()
