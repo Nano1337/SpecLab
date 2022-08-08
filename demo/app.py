@@ -7,9 +7,10 @@ import numpy as np
 import urllib
 
 # get image examples from github
-url, filename = ("https://github.com/mateuszbuda/brain-segmentation-pytorch/raw/master/assets/TCGA_CS_4944.png", "TCGA_CS_4944.png")
+url, filename = ("https://github.com/Nano1337/SpecLab/blob/main/examples/05829.png?raw=true", "05829.png") # make sure to use "copy image address"
+url, filename = ("https://github.com/Nano1337/SpecLab/blob/main/examples/10384.png?raw=true", "10384.png")
 try: urllib.URLopener().retrieve(url, filename)
-except: urllib.request.urlretrieve(url, filename)
+except: urllib.request.urlretrieve(url, filename) 
 
 def speclab(img):
 
@@ -41,8 +42,8 @@ title = "SpecLab Demo"
 description = "<p style='text-align: center'>Gradio demo for an ASPP model architecture trained on the SpecLab dataset. To use it, simply add your image, or click one of the examples to load them. </p>"
 article = "<p style='text-align: center'><a href='https://github.com/Nano1337/SpecLab'>Github Repo</a></p>"
 examples = [ # need to manually delete cache everytime new examples are added
-    [r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img\10384.png"], 
-    [r"D:\GLENDA_v1.5_no_pathology\no_pathology\GLENDA_img\05829.png"]
+    ['05829.png'], 
+    ["10384.png"]
 ]
 css = "#0 {object-fit: contain;} #1 {object-fit: contain;}"
 demo = gr.Interface(fn=speclab, 
