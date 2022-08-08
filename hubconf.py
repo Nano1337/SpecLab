@@ -5,7 +5,7 @@ from demo.ASPP import SRDetectModel
 
 def srdetect():
     model = SRDetectModel()
-    state_dict = torch.load(r"C:\Users\haoli\OneDrive\Documents\SpecLab\logs\model_checkpoints\epoch_009.ckpt")["state_dict"]
+    state_dict = torch.load(r"/logs/model_checkpoints/epoch_009.ckpt")["state_dict"]
     for key in list(state_dict.keys()):
         state_dict[key.replace('net.', '')] = state_dict.pop(key)
     model.load_state_dict(state_dict)
