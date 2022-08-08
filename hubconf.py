@@ -13,8 +13,7 @@ def srdetect():
     state_dict = torch.load("epoch_009.ckpt")["state_dict"]
     for key in list(state_dict.keys()):
         state_dict[key.replace('net.', '')] = state_dict.pop(key)
-    model.load_state_dict(state_dict)
-    model = model.to("cpu")
+    model.load_state_dict(state_dict, map_location=torch.device('cpu'))
     return model
 
 
